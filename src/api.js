@@ -26,12 +26,18 @@ export const loginUser = async (credentials) => {
   return response.data;
 };
 
+export const registerUser = async (userData) => {
+  const response = await api.post("/auth/register", userData);
+  return response.data;
+};
+
 export const fetchAllOrders = async () => {
   try {
     const response = await api.get("/orders/all"); 
     return response.data?.orders || response.data?.data || response.data || [];
   } catch (err) {
-    return [];
+    console.error("API Error fetching orders:", err);
+    throw err; 
   }
 };
 
@@ -44,7 +50,6 @@ export const updateOrderStatus = async (orderId, newStatus) => {
   }
 };
 
-// NEW: Submit Feedback
 export const submitFeedbackApi = async (orderId, data) => {
   try {
     const response = await api.post(`/orders/${orderId}/feedback`, data);
